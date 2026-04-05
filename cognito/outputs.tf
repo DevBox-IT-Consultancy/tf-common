@@ -35,7 +35,7 @@ output "identity_pool_id" {
 
 output "hosted_ui_url" {
   description = "Cognito Hosted UI URL"
-  value       = "https://${aws_cognito_user_pool_domain.main.domain}.auth.${data.aws_caller_identity.current.region}.amazoncognito.com"
+  value       = "https://${aws_cognito_user_pool_domain.main.domain}.auth.${data.aws_region.current.name}.amazoncognito.com"
 }
 
 output "authenticated_role_arn" {
