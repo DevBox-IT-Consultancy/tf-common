@@ -94,13 +94,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 # ========================
 # Bucket Policy
 # ========================
+# ========================
+# Bucket Policy
+# ========================
 resource "aws_s3_bucket_policy" "this" {
-  count  = var.bucket_policy_json != null ? 1 : 0
-  bucket = aws_s3_bucket.this.id
-  policy = var.bucket_policy_json
+  for_each = var.bucket_policy_json != null ? toset(["policy"]) : toset([])
+  bucket   = aws_s3_bucket.this.id
+  policy   = var.bucket_policy_json
 
   depends_on = [aws_s3_bucket_public_access_block.this]
 }
+
 
 # ========================
 # CORS Configuration
