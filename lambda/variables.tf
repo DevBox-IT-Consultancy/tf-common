@@ -8,6 +8,18 @@ variable "environment" {
   type        = string
 }
 
+variable "function_name" {
+  description = "Optional explicit Lambda function name. Defaults to app/environment naming when not set."
+  type        = string
+  default     = null
+}
+
+variable "role_name" {
+  description = "Optional explicit IAM role name for the Lambda execution role. Defaults to app/environment naming when not set."
+  type        = string
+  default     = null
+}
+
 # ========================
 # Lambda Configuration
 # ========================

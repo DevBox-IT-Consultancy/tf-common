@@ -3,13 +3,17 @@
 # Creates HTTP API Gateway with Lambda integration
 # ========================
 
+locals {
+  api_name = coalesce(var.api_name, "${var.app_name}-${var.environment}-api")
+}
+
 # ========================
 # API Gateway (HTTP API)
 # ========================
 resource "aws_apigatewayv2_api" "main" {
-  name          = "${var.app_name}-${var.environment}-api"
+  name          = local.api_name
   protocol_type = "HTTP"
-  description   = "${var.app_name} API Gateway for ${var.environment}"
+  description   = "${local.api_name} API Gateway for ${var.environment}"
 
   cors_configuration {
     allow_origins = var.cors_allow_origins
@@ -21,7 +25,7 @@ resource "aws_apigatewayv2_api" "main" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.app_name}-api-gateway"
+      Name        = local.api_name
       Environment = var.environment
     }
   )

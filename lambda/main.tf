@@ -3,11 +3,16 @@
 # Creates Lambda function with IAM role
 # ========================
 
+locals {
+  lambda_function_name = coalesce(var.function_name, "${var.app_name}-${var.environment}-function")
+  lambda_role_name     = coalesce(var.role_name, "${var.app_name}-${var.environment}-lambda-role")
+}
+
 # ========================
 # IAM Role for Lambda
 # ========================
 resource "aws_iam_role" "lambda_exec_role" {
-  name = "${var.app_name}-${var.environment}-lambda-role"
+  name = local.lambda_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -25,7 +30,7 @@ resource "aws_iam_role" "lambda_exec_role" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.app_name}-lambda-role"
+      Name        = local.lambda_role_name
       Environment = var.environment
     }
   )
@@ -47,7 +52,7 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_execution" {
 # Additional IAM policies (if provided)
 resource "aws_iam_role_policy_attachment" "additional_policies" {
   for_each = toset(var.additional_policy_arns)
-  
+
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = each.value
 }
@@ -56,7 +61,7 @@ resource "aws_iam_role_policy_attachment" "additional_policies" {
 # Lambda Function
 # ========================
 resource "aws_lambda_function" "main" {
-  function_name = "${var.app_name}-${var.environment}-function"
+  function_name = local.lambda_function_name
   filename      = var.lambda_filename
   handler       = var.lambda_handler
   runtime       = var.lambda_runtime
@@ -88,7 +93,7 @@ resource "aws_lambda_function" "main" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.app_name}-lambda"
+      Name        = local.lambda_function_name
       Environment = var.environment
     }
   )

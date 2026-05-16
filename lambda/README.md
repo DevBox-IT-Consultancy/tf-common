@@ -22,6 +22,9 @@ module "lambda" {
   app_name    = "my-app"
   environment = "dev"
 
+  function_name = "my-app-dev-api"
+  role_name     = "my-app-dev-api-lambda-role"
+
   lambda_filename = "${path.module}/../target/function.zip"
   lambda_handler  = "index.handler"
   lambda_runtime  = "nodejs18.x"
@@ -106,6 +109,8 @@ module "lambda" {
 |------|-------------|------|---------|:--------:|
 | app_name | Application name | `string` | n/a | yes |
 | environment | Environment (dev, staging, prod) | `string` | n/a | yes |
+| function_name | Optional explicit Lambda function name | `string` | `null` | no |
+| role_name | Optional explicit IAM role name | `string` | `null` | no |
 | lambda_filename | Path to Lambda deployment package | `string` | n/a | yes |
 | lambda_handler | Lambda function handler | `string` | `"index.handler"` | no |
 | lambda_runtime | Lambda runtime | `string` | `"provided.al2023"` | no |

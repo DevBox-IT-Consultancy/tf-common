@@ -21,6 +21,7 @@ module "api_gateway" {
 
   app_name    = "my-app"
   environment = "dev"
+  api_name    = "my-app-dev-web-api"
 
   lambda_function_name = module.lambda.function_name
   lambda_invoke_arn    = module.lambda.function_invoke_arn
@@ -107,6 +108,7 @@ module "api_gateway" {
 |------|-------------|------|---------|:--------:|
 | app_name | Application name | `string` | n/a | yes |
 | environment | Environment (dev, staging, prod) | `string` | n/a | yes |
+| api_name | Optional explicit API Gateway name | `string` | `null` | no |
 | lambda_function_name | Lambda function name | `string` | n/a | yes |
 | lambda_invoke_arn | Lambda invoke ARN | `string` | n/a | yes |
 | api_stage_name | API Gateway stage name | `string` | `"$default"` | no |

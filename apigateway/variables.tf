@@ -8,6 +8,12 @@ variable "environment" {
   type        = string
 }
 
+variable "api_name" {
+  description = "Optional explicit API Gateway name. Defaults to app/environment naming when not set."
+  type        = string
+  default     = null
+}
+
 # ========================
 # Lambda Integration
 # ========================
